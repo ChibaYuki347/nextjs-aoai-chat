@@ -31,9 +31,30 @@ azd provision
 azd down
 ```
 
+### プライベートエンドポイントを利用する場合
+
+```bash
+azd env set AZURE_USE_PRIVATE_ENDPOINT true
+```
+
+さらに、Azure OpenAIとCosmosDBのパブリックアクセスを無効する場合
+
+```bash
+azd env set AZURE_PUBLIC_NETWORK_ACCESS Disabled
+```
+
+もしくは`.azure/{環境名}/.env`に以下のように記述します。
+
+```bash
+AZURE_USE_PRIVATE_ENDPOINT="true"
+AZURE_PUBLIC_NETWORK_ACCESS="Disabled"
+```
+
+その上で`azd provision`を実行します。
+
 ### ローカルでの開発
 
-`src/nextapp/.env.local`にAzureのリソース情報を設定します。
+`src/nextapp/.env.local`にAzureのリソース情報を設定します。  
 `src/nextapp/.env.example`を参考にしてください。
 
 例:
@@ -49,6 +70,8 @@ COSMOS_DB_ENDPOINT=https://**.documents.azure.com:443/
 # Cosmos DB Key
 COSMOS_DB_KEY=fq2XN4ZhXL6UVS54AY05wqzMEOR6XBBTVPh27okEfFvNxqL4FmgIXJOewDxZp96ogWIpg4QDQMVKACDbJiRQng==
 ```
+
+実行:
 
 ```bash
 npm run dev
