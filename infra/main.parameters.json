@@ -13,6 +13,12 @@
     },
     "usePrivateEndpoint": {
       "value": "${AZURE_USE_PRIVATE_ENDPOINT=false}"
+    },
+    "openaiAssistantId": {
+      "value": "${AZURE_OPENAI_ASSISTANT_ID}"
+    },
+    "openaiFontFileId": {
+      "value": "${AZURE_OPENAI_FONT_FILE_ID}"
     }
   }
 }

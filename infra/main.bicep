@@ -31,6 +31,13 @@ param deploymentName string = 'gpt-4o'
 @description('Deployment version of the OpenAI resource')
 param deploymentVersion string = '2024-05-13'
 
+// Azure OpenAI Assistant ID
+@description('Assistant ID of the OpenAI resource')
+param openaiAssistantId string = 'assistant-1'
+// Azure OpenAI File Font ID
+@description('File Font ID of the OpenAI resource')
+param openaiFileFontId string = 'font-1'
+
 
 // Tags that should be applied to all resources.
 // 
@@ -114,7 +121,7 @@ module cosmosAccount 'core/database/cosmos.bicep' = {
   name: 'cosmos'
   scope: rg
   params: {
-    cosmosAccountName: toLower('cosmos${abbrs.documentDBDatabaseAccounts}${resourceToken}')
+    cosmosAccountName: toLower('${abbrs.documentDBDatabaseAccounts}${resourceToken}')
     location: location
     publicNetworkAccess: publicNetworkAccess
   }
@@ -149,17 +156,30 @@ module privateEndpoints 'private-endpoints.bicep' = if (usePrivateEndpoint) {
 }
 
 // App Service with Node.js
-module appservice './core/host/appservice.bicep' = {
-  name: 'appservice'
+module website 'website.bicep' = {
+  name: 'nextjsapp'
   scope: rg
   params: {
     location: location
     name: '${abbrs.webSitesAppService}nextapp-${resourceToken}'
     tags: tags
     appServicePlanId: hostingPlan.outputs.id
-    runtimeName: 'node'
-    runtimeVersion: '18'
+    cosmosAccountName: cosmosAccount.outputs.name
+    openaiResouceName: openai.outputs.name
+    usePrivateEndpoint: usePrivateEndpoint
     virtualNetworkSubnetId: usePrivateEndpoint ? isolation.outputs.backendSubnetId : ''
+    openaiAssistantId: openaiAssistantId
+    openaiFileFontId: openaiFileFontId
   }
 }
 
+
+
+output AZURE_OPENAI_ENDPOINT string = openai.outputs.endpoint
+output AZURE_OPENAI_API_KEY string = openai.outputs.key
+output AZURE_OPENAI_DEPLOYMENT_NAME string = deploymentName
+// const apiKey = process.env.AZURE_OPENAI_API_KEY;
+// const apiVersion = process.env.API_VERSION;
+// const deploymentName = process.env.DEPLOYMENT_NAME;
+// let assistantId = process.env.ASSISTANT_ID;
+// let fileFontId = process.env.FONT_FILE_ID;

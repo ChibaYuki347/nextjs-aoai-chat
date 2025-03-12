@@ -42,13 +42,14 @@ resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01
   name: deployment.name
   properties: {
     model: deployment.model
-    raiPolicyName: contains(deployment, 'raiPolicyName') ? deployment.raiPolicyName : null
+    raiPolicyName: deployment.?raiPolicyName ?? null
   }
-  sku: contains(deployment, 'sku') ? deployment.sku : {
+  sku: deployment.?sku ?? {
     name: 'Standard'
     capacity: 20
   }
 }]
+
 
 // output openai key
 var accountKey = account.listKeys().key1
@@ -57,4 +58,4 @@ output endpoint string = account.properties.endpoint
 output endpoints object = account.properties.endpoints
 output id string = account.id
 output name string = account.name
-output accountKey string = accountKey
+output key string = accountKey
