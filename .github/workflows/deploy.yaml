@@ -1,0 +1,58 @@
+name: Build and deploy Node.js app to Azure Web App
+
+on:
+    push:
+      branches:
+        - main
+        - feature/*
+      paths-ignore:
+        - "Readme.md"
+        - "docs/**"
+        - "samples/**"
+        - .env*
+    workflow_dispatch:
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Node.js version
+              uses: actions/setup-node@v4
+              with:
+                node-version: '20'
+            - name: npm install, build, and test
+              run: |
+                npm install
+                npm run build
+                npm run test --if-present
+            
+            - name: create env file
+              run: |
+                    touch .env
+                    echo "AZURE_OPENAI_RESOURCE_NAME=${{ secrets.AZURE_OPENAI_RESOURCE_NAME }}" >> .env
+                    echo "AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}" >> .env
+                    echo "COSMOS_DB_ENDPOINT=${{ secrets.COSMOS_DB_ENDPOINT }}" >> .env
+                    echo "COSMOS_DB_KEY=${{ secrets.COSMOS_DB_KEY }}" >> .env
+                    echo "ASSISTANT_ID=${{ secrets.ASSISTANT_ID }}" >> .env
+                    echo "AZURE_OPENAI_FONT_FILE_ID=${{ secrets.AZURE_OPENAI_FONT_FILE_ID }}" >> .env
+            
+            - name: npm install, build and test
+              run: |
+                    npm install
+                    npm run build
+                    npm run test --if-present
+            
+            - name: Zip all files for upload between jobs
+                # IMPORTANT: .next is a hidden folder and will NOT be included in the zip unless we specify it
+                # To fix: /home/site/wwwroot/node_modules/.bin/next: 1: ../next/dist/bin/next: not found
+              run: zip next.zip ./* .next .env -qr
+            
+            - name: Deploy to Azure Web App
+              uses: azure/webapps-deploy@v2
+              with:
+                app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+                publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+                package: 'next.zip'

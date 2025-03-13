@@ -31,8 +31,10 @@ module appservice './core/host/appservice.bicep' = {
     name: name
     tags: tags
     appServicePlanId: appServicePlanId
+    appCommandLine: 'pm2 --no-daemon start  ecosystem.config.js'
     runtimeName: 'node'
     runtimeVersion: '20'
+    scmType: 'GitHub'
     scmDoBuildDuringDeployment: true
     appSettings: {
       // Azure OpenAI Resource Name

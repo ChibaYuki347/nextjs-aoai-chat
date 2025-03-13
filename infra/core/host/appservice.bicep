@@ -37,6 +37,8 @@ param use32BitWorkerProcess bool = false
 param ftpsState string = 'FtpsOnly'
 param healthCheckPath string = ''
 param virtualNetworkSubnetId string = ''
+@allowed(['None','GitHub', 'LocalGit'])
+param scmType string = 'None'
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: name
@@ -59,6 +61,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       cors: {
         allowedOrigins: union([ 'https://portal.azure.com', 'https://ms.portal.azure.com' ], allowedOrigins)
       }
+      scmType: scmType
     }
     clientAffinityEnabled: clientAffinityEnabled
     httpsOnly: true
