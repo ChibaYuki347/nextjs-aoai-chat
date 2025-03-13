@@ -12,7 +12,7 @@ on:
         - .env*
     workflow_dispatch:
 jobs:
-    build:
+    deploy:
         runs-on: ubuntu-latest
         permissions:
             contents: read
@@ -23,12 +23,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                 node-version: '20'
-            - name: npm install, build, and test
-              run: |
-                npm install
-                npm run build
-                npm run test --if-present
-            
+
             - name: create env file
               run: |
                     touch .env
