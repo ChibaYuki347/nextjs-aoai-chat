@@ -36,7 +36,7 @@ param deploymentVersion string = '2024-05-13'
 param openaiAssistantId string = 'assistant-1'
 // Azure OpenAI File Font ID
 @description('File Font ID of the OpenAI resource')
-param openaiFileFontId string = 'font-1'
+param openaiFontFileId string = 'font-1'
 
 
 // Tags that should be applied to all resources.
@@ -169,7 +169,7 @@ module website 'website.bicep' = {
     usePrivateEndpoint: usePrivateEndpoint
     virtualNetworkSubnetId: usePrivateEndpoint ? isolation.outputs.backendSubnetId : ''
     openaiAssistantId: openaiAssistantId
-    openaiFileFontId: openaiFileFontId
+    openaiFileFontId: openaiFontFileId
   }
 }
 

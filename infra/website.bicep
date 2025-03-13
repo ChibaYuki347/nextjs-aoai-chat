@@ -46,6 +46,8 @@ module appservice './core/host/appservice.bicep' = {
       AZURE_OPENAI_ASSISTANT_ID: openaiAssistantId
       //Azure OpenAI Font File ID
       AZURE_OPENAI_FONT_FILE_ID: openaiFileFontId
+      // npm start Port
+      PORT: 3000
     }
     virtualNetworkSubnetId: usePrivateEndpoint ? virtualNetworkSubnetId : null
   }
