@@ -17,7 +17,7 @@
     "openaiAssistantId": {
       "value": "${AZURE_OPENAI_ASSISTANT_ID}"
     },
-    "openaiFontFileId": {
+    "openaiFileFontId": {
       "value": "${AZURE_OPENAI_FONT_FILE_ID}"
     }
   }
