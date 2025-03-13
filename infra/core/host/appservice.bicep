@@ -14,7 +14,7 @@ param managedIdentity bool = !empty(keyVaultName)
   'dotnet', 'dotnetcore', 'dotnet-isolated', 'node', 'python', 'java', 'powershell', 'custom'
 ])
 param runtimeName string
-param runtimeNameAndVersion string = '${runtimeName}|${runtimeVersion}'
+param runtimeNameAndVersion string = runtimeName == 'node' ? '${runtimeName}|${runtimeVersion}-lts' : '${runtimeName}|${runtimeVersion}' 
 param runtimeVersion string
 
 // Microsoft.Web/sites Properties
@@ -70,14 +70,14 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   resource basicPublishingCredentialsPoliciesFtp 'basicPublishingCredentialsPolicies' = {
     name: 'ftp'
     properties: {
-      allow: false
+      allow: true
     }
   }
 
   resource basicPublishingCredentialsPoliciesScm 'basicPublishingCredentialsPolicies' = {
     name: 'scm'
     properties: {
-      allow: false
+      allow: true
     }
   }
 }
