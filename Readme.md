@@ -7,6 +7,49 @@ Azure App Serviceを使って、NextjsアプリケーションでAzure OpenAIを
 
 ![構成図](./docs/images/Architecture.png)
 
+## ディレクトリ構造(変更可能性あり)
+
+下記のような構造です。
+
+```bash
+.azure # azdで作成される環境変数
+.github # GitHub Actionsの設定
+├── workflows
+    ├── deploy.yml # デプロイ用のGitHub Actions
+.next # Next.jsのビルド時に作成されるファイル
+app # Next.jsアプリケーション
+components # Next.jsのコンポーネント
+docs # ドキュメント
+infra # Azureリソースの定義
+├── core # Azureリソース作成で汎用的に使えるファイル
+├── main.bicep # Azureリソースの定義
+├── main.parameters.json # Azureリソースのパラメータ
+├── abbreviations.json # Azureリソースの省略名
+├── network-isolation.bicep # ネットワーク分離のためのBicepファイル
+├── private-endpoint.bicep # プライベートエンドポイントのためのBicepファイル
+├── website.bicep # Web AppのためのBicepファイル
+    |── scripts # Azureリソースの作成スクリプト
+        ├── createAssistant.mjs # Assistantの作成スクリプト
+        ├── input_files # Assistant作成に必要な日本語   フォントを格納
+lib # Next.jsのアプリで使うutility関数
+node_modules # npmのモジュール
+public # Next.jsのアプリで使う静的ファイル
+samples # Excel分析に使うデータサンプル
+.env.example # 環境変数の例
+.gitignore # gitignore
+azure.yaml # azdの設定
+components.json # UIライブラリshadcn/uiのコンポーネントの設定
+ecosystem.config.json # App Service起動で使うpm2の設定
+eslint.config.js # eslintの設定
+next.config.ts # Next.jsの設定
+package-lock.json # npmの設定
+package.json # npmの設定
+postcss.config.mjs # postcssの設定
+tailwind.config.js # tailwindの設定
+tsconfig.json # typescriptの設定
+Readme.md # このドキュメント
+```
+
 ## 使い方
 
 ### Azureリソースの作成
@@ -94,9 +137,24 @@ AZURE_OPENAI_FONT_FILE_ID="assistant-AfmkrDSgyRyo9fzUXZ8gC7"
 
 実行:
 
+事前に
+
+```bash
+npm install
+```
+
+を実行してから、以下のコマンドでアプリケーションを起動します。
+
 ```bash
 npm run dev
 ```
+
+### デプロイ
+
+GitHub Actionsを使ってデプロイ可能です。
+`.github/workflows/deploy.yml`を参考にしてください。
+
+解説は[こちら](./docs/Deploy.md)にあります。
 
 ## 参照
 
