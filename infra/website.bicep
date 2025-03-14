@@ -35,7 +35,7 @@ module appservice './core/host/appservice.bicep' = {
     runtimeName: 'node'
     runtimeVersion: '20'
     scmType: 'GitHub'
-    scmDoBuildDuringDeployment: true
+    scmDoBuildDuringDeployment: false
     appSettings: {
       // Azure OpenAI Resource Name
       AZURE_OPENAI_RESOURCE_NAME: openai.name

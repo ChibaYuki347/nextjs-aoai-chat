@@ -14,6 +14,9 @@
     "usePrivateEndpoint": {
       "value": "${AZURE_USE_PRIVATE_ENDPOINT=false}"
     },
+    "disableKeyAccess": {
+      "value": "${AZURE_DISABLE_KEY_ACCESS=false}"
+    },
     "openaiAssistantId": {
       "value": "${AZURE_OPENAI_ASSISTANT_ID}"
     },

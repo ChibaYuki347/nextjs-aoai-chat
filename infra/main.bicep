@@ -16,6 +16,9 @@ param usePrivateEndpoint bool = false
 @description('Public network access value for all deployed resources')
 @allowed(['Enabled', 'Disabled'])
 param publicNetworkAccess string = 'Enabled'
+// disable key access　TODO: this is supported only for Cosmos DB now.
+@description('Disable key access for all deployed resources')
+param disableKeyAccess bool = false
 
 // Azure OpenAI
 // openai resouce region
@@ -124,6 +127,7 @@ module cosmosAccount 'core/database/cosmos.bicep' = {
     cosmosAccountName: toLower('${abbrs.documentDBDatabaseAccounts}${resourceToken}')
     location: location
     publicNetworkAccess: publicNetworkAccess
+    disableKeyAccess: disableKeyAccess
   }
 }
 
