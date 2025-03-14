@@ -3,7 +3,8 @@ param cosmosAccountName string
 param location string
 @allowed(['Enabled', 'Disabled'])
 param publicNetworkAccess string = 'Enabled'
-
+@description('Disable key access to the Cosmos DB account. This is only available for accounts with public network access disabled.')
+param disableKeyAccess bool = false
 
 resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
   name: cosmosAccountName
@@ -22,6 +23,7 @@ resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
     ]
     databaseAccountOfferType: 'Standard'
     publicNetworkAccess: publicNetworkAccess
+    disableLocalAuth: disableKeyAccess ? true : false
   }
 }
 
